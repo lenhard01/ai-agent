@@ -1,0 +1,38 @@
+line-length = 88
+indent-width = 4
+
+[lint]
+extend-select = [
+  "F",    # Pyflakes — catches wildcard-import issues (F403/405/406) not in new defaults
+  "W",    # PyCodeStyle warnings — only W605 is default
+  "E",    # PyCodeStyle errors — only E722/E902 are default
+  "I",    # Full isort behavior (I002 required-imports not default)
+  "UP",   # Fills gaps in pyupgrade coverage
+  "B",    # Fills gaps in bugbear coverage
+  "C4",   # Fills gaps (C412, C416 missing from defaults)
+  "ISC",  # Full string-concat checks
+  "ICN",  # Not in defaults at all
+  "RET",  # Only RET501 is default — this adds RET502-508
+  "SIM",  # Fills large gaps in simplify coverage
+  "TID",  # Not in defaults at all
+  "TC",   # Adds the actually-useful TYPE_CHECKING import rules
+  "PTH",  # Adds most of the pathlib rules (100-123)
+  "FURB", # Fills gaps in refurb coverage
+]
+
+ignore = ["E501", "W191"]
+
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[lint.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[lint.pycodestyle]
+max-doc-length = 72
+
+[format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+docstring-code-format = true
+docstring-code-line-length = 72
