@@ -3,6 +3,7 @@ import os
 
 from dotenv import load_dotenv
 from openai import OpenAI
+from openai.types.chat import ChatCompletionMessageParam
 
 load_dotenv()
 api_key = os.environ.get("OPENROUTER_API_KEY")
@@ -19,7 +20,7 @@ parser.add_argument("user_prompt", type=str, help="User prompt")
 parser.add_argument("--verbose", action="store_true", help="Enable verbose output")
 args = parser.parse_args()
 
-messages = [
+messages: list[ChatCompletionMessageParam] = [
     {"role": "user", "content": args.user_prompt},
 ]
 
