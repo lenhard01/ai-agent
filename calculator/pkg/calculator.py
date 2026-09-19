@@ -1,6 +1,7 @@
-# calculator/pkg/calculator.py
+from typing import TYPE_CHECKING
 
-from collections.abc import Callable
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 class Calculator:
