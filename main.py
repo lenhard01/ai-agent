@@ -1,9 +1,12 @@
 import argparse
 import os
+from typing import TYPE_CHECKING
 
 from dotenv import load_dotenv
 from openai import OpenAI
-from openai.types.chat import ChatCompletionMessageParam
+
+if TYPE_CHECKING:
+    from openai.types.chat import ChatCompletionMessageParam
 
 load_dotenv()
 api_key = os.environ.get("OPENROUTER_API_KEY")
