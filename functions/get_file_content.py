@@ -6,15 +6,15 @@ from config import MAX_CHARS
 def get_file_content(working_directory: str, file_path: str) -> str:
     try:
         base_dir = os.path.abspath(working_directory)
-        target_dir = os.path.normpath(os.path.join(base_dir, file_path))
+        target_path = os.path.normpath(os.path.join(base_dir, file_path))
 
-        if os.path.commonpath([base_dir, target_dir]) != base_dir:
+        if os.path.commonpath([base_dir, target_path]) != base_dir:
             return f'Error: Cannot read "{file_path}" as it is outside the permitted working directory'
 
-        if not os.path.isfile(base_dir):
+        if not os.path.isfile(target_path):
             return f'Error: File not found or is not a regular file: "{file_path}"'
 
-        with open(target_dir) as f:
+        with open(target_path) as f:
             file_content_string = f.read(MAX_CHARS)
 
             if f.read(1):
