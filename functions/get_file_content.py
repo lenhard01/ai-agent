@@ -5,16 +5,16 @@ from config import MAX_CHARS
 
 def get_file_content(working_directory: str, file_path: str) -> str:
     try:
-        working_dir_abs = os.path.abspath(working_directory)
-        target_abs = os.path.normpath(os.path.join(working_dir_abs, file_path))
+        base_dir = os.path.abspath(working_directory)
+        target_dir = os.path.normpath(os.path.join(base_dir, file_path))
 
-        if os.path.commonpath([working_dir_abs, target_abs]) != working_dir_abs:
+        if os.path.commonpath([base_dir, target_dir]) != base_dir:
             return f'Error: Cannot read "{file_path}" as it is outside the permitted working directory'
 
-        if not os.path.isfile(target_abs):
+        if not os.path.isfile(base_dir):
             return f'Error: File not found or is not a regular file: "{file_path}"'
 
-        with open(target_abs) as f:
+        with open(target_dir) as f:
             file_content_string = f.read(MAX_CHARS)
 
             if f.read(1):
