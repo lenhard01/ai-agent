@@ -1,5 +1,6 @@
 import argparse
 import os
+import sys
 
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -30,7 +31,12 @@ def main() -> None:
     if args.verbose:
         print(f"User prompt: {args.user_prompt}\n")
 
-    generate_content(client, messages, args.verbose)
+    for _ in range(20):
+        generate_content(client, messages, args.verbose)
+        if not getattr(messages[-1], "tool_calls", None):
+            return
+
+    sys.exit(1)
 
 
 def generate_content(client: OpenAI, messages: list, verbose: bool) -> None:
@@ -47,6 +53,7 @@ def generate_content(client: OpenAI, messages: list, verbose: bool) -> None:
         print("Response tokens:", response.usage.completion_tokens)
 
     message = response.choices[0].message
+    messages.append(message)
     if not message.tool_calls:
         print("Response:")
         print(message.content)
@@ -55,14 +62,10 @@ def generate_content(client: OpenAI, messages: list, verbose: bool) -> None:
     for tool_call in message.tool_calls:
         if tool_call.type != "function":
             continue
-
         result_message = call_function(tool_call, verbose)
-
+        messages.append(result_message)
         if not result_message.get("content"):
-            raise RuntimeError(
-                f"Function {tool_call.function.name} returned empty content"
-            )
-
+            raise RuntimeError(f"Empty function response for {tool_call.function.name}")
         if verbose:
             print(f"-> {result_message['content']}")
 
